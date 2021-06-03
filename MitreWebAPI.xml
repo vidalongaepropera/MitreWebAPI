@@ -1,0 +1,1688 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MitreWebAPI</name>
+    </assembly>
+    <members>
+        <member name="T:MitreWebAPI.Controllers.ChatBot.ChatBotController">
+            <summary>
+            Contém controles principais da API para uso do Chat Bot 
+            </summary>
+        </member>
+        <member name="F:MitreWebAPI.Controllers.ChatBot.ChatBotController._infoClienteConectado">
+            <summary>
+            Clase que mantem na sessão as informações do client conectado.
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.#ctor(Microsoft.Extensions.Configuration.IConfiguration,MitreWebAPI.Model.ChatBot.InfoClienteConectado,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Metodo princiap de inicialização do Chat Bot
+            </summary>
+            <param name="Configuration"></param>
+            <param name="infoClienteConectado"></param>
+            <param name="env"></param>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.ValidaClienteExistente(System.String,System.String)">
+            <summary>
+            Valida o cliente e cliente passando o CPF ou CNPJ e o Token da aplicação.
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_token_app"></param>
+            <returns>Retorna se é client ou não</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.LoginAndListaUnidade(System.String,System.String,System.String)">
+            <summary>
+            Faz o Login do cliente e lista as unidades
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_senha"></param>
+            <param name="p_token_app"></param>
+            <returns>Lista da unidades do cliente logado</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.ListaTipologiaUnidades(System.String)">
+            <summary>
+            Lista as tipologias utiiadas para cadastr unidades
+            </summary>
+            <param name="p_token_app"></param>
+            <returns>Lista com ID e nome da tipologia</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.LoginAndListaUnidadeTmp(System.String,System.String,System.String)">
+            <summary>
+            Efetua o acesso com um código (senha) temporária que o cliente solicita
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_senha"></param>
+            <param name="p_token_app"></param>
+            <returns>Lista da unidades do cliente logado</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.GeraTokenTemporario(System.String,System.String,System.String)">
+            <summary>
+            Cria um código temporário, válido por uma hora, par ao acesso do cliente
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_token_app"></param>
+            <param name="p_reenvia"></param>
+            <returns>Informações de envio se código temporário npara o e-mail e sms para o e-mail e telefone cadastrado</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.SolicitaTrocaSenha(System.String,System.String,System.String)">
+            <summary>
+            Solicitação de troca de senha do cliente por esquecimento
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_reenvia"></param>
+            <param name="p_token_app"></param>
+            <returns>Informações de pedido de troca de senha do cliente</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.TrocarSenha(System.String,System.Int32,System.String,System.String)">
+            <summary>
+            Efetua a troca de senha do cliente com token
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_codigo_verif"></param>
+            <param name="p_nova_senha"></param>
+            <param name="p_token_app"></param>
+            <returns>Restutado a solicitação da troca de senha</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.TrocarSenhaAtual(System.String,System.String,System.String,System.String)">
+            <summary>
+            Efetua a troca de senha do cliente com senha anterior
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_atual_senha"></param>
+            <param name="p_nova_senha"></param>
+            <param name="p_token_app"></param>
+            <returns>Restutado a solicitação da troca de senha</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.AlteradDadoCadastral(MitreWebAPI.Model.ChatBot.InfoAlteraDadosCadastral,System.String)">
+            <summary>
+            Efetua a alteração de dados cadastrais do cliente
+            </summary>
+            <param name="info"></param>
+            <param name="p_token_app"></param>
+            <returns>Informações de sucesso ou erro na troca</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.ConsultadDadoCadastral(System.String,System.String)">
+            <summary>
+            Informamações basica do cadastro do clienta
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_token_app"></param>
+            <returns>Dados de cpf_cnpj, id, telefones e aceite de comunicação por sms e e-mail</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.ListaBoletos(System.String,System.String,System.String)">
+            <summary>
+            Lista todos os boletos diponíveis do cliente de um determinado contrato
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_numero_contrato"></param>
+            <param name="p_token_app"></param>
+            <returns>Lista com dados da unidade do contrato e seus respectivos boletos, quando disponíveis</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.ListaTodosBoletos(System.String,System.String)">
+            <summary>
+            Lista todos os boletos de um determinado cliente
+            Se o cliente tiver mais de uma unidade serão listados
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_token_app"></param>
+            <returns>Lista dados das unidades com todos boletos disponíveis</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.TodosExtratos(System.String,System.String)">
+            <summary>
+            Lista todos os extratos de um determinado cliente
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_token_app"></param>
+            <returns>Lista com dados das unidades e extratos disponíveis</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.ListaTodosDemoIR(System.String,System.String)">
+            <summary>
+            Lista os informe de IR do cliente 
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_token_app"></param>
+            <returns>Lista dados das unidades e IR disponíveis dos últimos 2 anos</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.DownloadBoleto(System.String,System.String,System.String)">
+            <summary>
+            Faz o download boleto bancário, baseando no que foi listado anteriormente
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_numero_parcela"></param>
+            <param name="p_token_app"></param>
+            <returns>Baixa o boleto bancário em PDF</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.DownloadBoletoJson(System.String,System.String,System.String)">
+            <summary>
+            Baixa o boleto em PDF via JSON
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_numero_parcela"></param>
+            <param name="p_token_app"></param>
+            <returns>Dados em JSON para conversão do documento</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.DownloadExtrato(System.String,System.Int32,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Baixa o extrato do cliente em PDF via JSON
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_numero_organizacao"></param>
+            <param name="p_numero_filial"></param>
+            <param name="p_numero_contrato"></param>
+            <param name="p_data_base"></param>
+            <param name="p_token_app"></param>
+            <returns>Baixa o PDF do extarto do contrato selecionado</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.DownloadExtratoJson(System.String,System.Int32,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Baixa o extrato do cliente em PDF
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_numero_organizacao"></param>
+            <param name="p_numero_filial"></param>
+            <param name="p_numero_contrato"></param>
+            <param name="p_data_base"></param>
+            <param name="p_token_app"></param>
+            <returns>Baixa o PDF do extarto do contrato selecionado via JSON</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.GetInformeIR(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>
+            Baixa o informe do IR do cliente
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_numero_organizacao"></param>
+            <param name="p_numero_filial"></param>
+            <param name="p_numero_contrato"></param>
+            <param name="p_ano_do_informe"></param>
+            <param name="p_token_app"></param>
+            <returns>Baixa o PDF do informe de IR para o contrato e ano selecionado</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.GetInformeIRJson(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>
+            Baixa o informe do IR do cliente em PDF via JSON
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_numero_organizacao"></param>
+            <param name="p_numero_filial"></param>
+            <param name="p_numero_contrato"></param>
+            <param name="p_ano_do_informe"></param>
+            <param name="p_token_app"></param>
+            <returns>Baixa o PDF do informe de IR para o contrato e ano selecionado</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.ListaProdutos(System.String)">
+            <summary>
+            Lista todos os produtos (empreedimentos).
+            </summary>
+            <param name="p_token_app"></param>
+            <returns>Lista com ID e Nome doproduto</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.ListaAtendenteEmpreendimento(System.String,System.Int32,System.String)">
+            <summary>
+            Lista o agente de atendimento SAC para o emprendimento selecionado
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_emp_codigo"></param>
+            <param name="p_token_app"></param>
+            <returns>Retorna o código do agente qSAC que atende esse empreendimento. Esse código é o mesmo cadastrado em nosso sistema SAC</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.ListaFaqCategorias(System.String,System.String)">
+            <summary>
+            Lista as categorias do FAQ
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_token_app"></param>
+            <returns>Lista com o nomes das categorias</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.ListaFaqPerguntasRespostas(System.String,System.String,System.String)">
+            <summary>
+            Lista todas as perguntas e respostas baseado na categoria solicitada
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_categoria"></param>
+            <param name="p_token_app"></param>
+            <returns>Lista com as perguntas e respostas</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.ListaProdutosMitre(System.Int32,System.String)">
+            <summary>
+            Lista os produtos da Mitre em determinada região
+            </summary>
+            <param name="p_regiao_id"></param>
+            <param name="p_token_app"></param>
+            <returns>Lista com os dados do produto</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.ListaRegiaoProdutosMitre(System.String)">
+            <summary>
+            Lista as regiões onde existem produtos da Mitre
+            </summary>
+            <param name="p_token_app"></param>
+            <returns>Lista com as regiões</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.GravaInteracaoBOT(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Grava os passos que o BOT fez a interação 
+            </summary>
+            <param name="p_idbot"></param> 
+            <param name="p_plataforma"></param> 
+            <param name="p_channel"></param> 
+            <param name="p_username"></param> 
+            <param name="p_decisaoinicial"></param> 
+            <param name="p_tipodocumento"></param> 
+            <param name="p_documento"></param> 
+            <param name="p_opcaomenu"></param> 
+            <param name="p_tipoduvida"></param> 
+            <param name="p_email"></param> 
+            <param name="p_objetivocompra"></param> 
+            <param name="p_tipoapartamento"></param> 
+            <param name="p_regiao"></param> 
+            <param name="p_tipoempreendimento"></param> 
+            <param name="p_baixarebook"></param> 
+            <param name="p_proximopasso"></param> 
+            <param name="p_token_app"></param>
+            <returns>Status do Processamento</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.GravaInteracaoPesquisaBOT(System.String,System.String,System.String,System.String)">
+            <summary> 
+            Grava os passos que o BOT fez a interação pesquisa 
+            </summary> 
+            <param name="p_idbot"></param>  
+            <param name="p_nota"></param>  
+            <param name="p_motivo"></param>  
+            <param name="p_token_app"></param> 
+            <returns>Status do Processamento</returns> 
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotController.GravaInteracaoAtendimentoBOT(System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary> 
+            Grava os passos que o BOT fez a interação atendimento 
+            </summary> 
+            <param name="p_idbot"></param>  
+            <param name="p_protocolo"></param>  
+            <param name="p_depto"></param>  
+            <param name="p_agente"></param> 
+            <param name="p_status"></param>  
+            <param name="p_token_app"></param> 
+            <returns>Status do Processamento</returns> 
+        </member>
+        <member name="T:MitreWebAPI.Controllers.ChatBot.ChatBotView">
+            <summary>
+            Trata assuntos relacionando ao Chat Bot
+            Contrele de Acesso por Login do usuário por cpf ou cnpj e senha
+            Control de Acesso por Token temporário
+            Download Extratos
+            Download Boletos
+            Download Demonstrativo de IR
+            Listagem Extratos
+            Listagem Boletos
+            Listagen Demonstrativo de IR
+            Listagem de Dados das Unidades
+            Informações de Faq do SAC
+            </summary>
+        </member>
+        <member name="F:MitreWebAPI.Controllers.ChatBot.ChatBotView.ACESSO_COM_SENHA_TMP">
+            <summary>
+            Mantem a informação de que se a senha de acesso é a temporária.
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,System.String)">
+            <summary>
+            Guarda as configuraçõpes da aplicação devalida o token da aplicação
+            </summary>
+            <param name="Configuration"></param>
+            <param name="env"></param>
+            <param name="p_token_app"></param>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.ValidaClienteExistente(System.String)">
+            <summary>
+            Valida se o cpf ou cnpj enviado está na base de clientes.
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <returns>Retorna informações de validação do cliente</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.ContratosCliente(System.String,System.String,System.String)">
+            <summary>
+            Retorna as informações do contrto do cliente, como empreendimento, boco, unidade, status do contrato e etc
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_senha"></param>
+            <param name="p_e_senha_tmp"></param>
+            <returns>Retorna os dados do contrato do cliente</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.ListaTipologiaUnidades">
+            <summary>
+            Lista as tipologias utiiadas para cadastr unidades
+            </summary>
+            <returns>Lista com ID e nome da tipologia</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.SolicitaTrocaSenha(System.String,System.String)">
+            <summary>
+            Solicita a troca de senha
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_reenvio"></param>
+            <returns>Dados da efitavção da solicitação de troca de senha</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.TrocarSenha(System.String,System.Int32,System.String,System.String)">
+            <summary>
+            Efetua a troca da senha do cliente
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_codigo"></param>
+            <param name="p_nova_senha"></param>
+            <param name="p_atual_senha"></param>
+            <returns>Retorna dados da troca de senha do cliente</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.AlterarDadoCadastral(MitreWebAPI.Model.ChatBot.InfoAlteraDadosCadastral)">
+            <summary>
+            Efetua a alteração de dados cadastrais do cliente
+            </summary>
+            <param name="info"></param>
+            <returns>Informações de sucesso ou erro na troca</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.ConsultarDadoCadastral(System.String)">
+            <summary>
+            Informamações basica do cadastro do clienta
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <returns>Dados de cpf_cnpj, id, telefones e aceite de comunicação por sms e e-mail</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.GeraTokenTemporario(System.String,System.String)">
+            <summary>
+            Gera um código para o acesso temporário do cliente.
+            p_reenvio: pode ser S ou N
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_reenvio"></param>
+            <returns>Retorna o e-mail cadastrato com a informação do código gerado</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.TodosDemoIR(System.String)">
+            <summary>
+            Lista todos os demonstrativos de IR, mais informações da unidade do cliente
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <returns>Lista as unidades e ano que contem disponível o informe do IR</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.TodosExtratos(System.String)">
+            <summary>
+            Lista todos os extratos de pagamentos, mais informações da unidade do cliente
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <returns>Lista as unidades com informações dos extratos de pagamentos disponíveis</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.TodosBoletos(System.String)">
+            <summary>
+            Lista todos os boletos bancario, mais informações da unidade do cliente e linha digitável do boleto
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <returns>Lista as unidades com informações dos boletos bancários disponíveis</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.Boletos(System.String)">
+            <summary>
+            Lista informações dos boletos dispoíveis de um determinado contrato
+            </summary>
+            <param name="p_numero_contrato"></param>
+            <returns>Lista dados de boletos de um determinado contrato</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.ListaProdutos(System.Nullable{System.Int32})">
+            <summary>
+            Lista de todos os produtos
+            Opcionamente, pode passar um id, para retornar o nome
+            </summary>
+            <param name="id_empreendimento"></param>
+            <returns>Lista com co id_produto e nome do produto (empreendimento)</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.SetInfoLogApp(System.String,System.String,System.String,System.String)">
+            <summary>
+            Controla os logs de acesso à API, com informações de cpf ou cnpj, ip, browser e url
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_remote_ip_address"></param>
+            <param name="p_user_agent"></param>
+            <param name="p_path_request"></param>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.ListaFaqCategorias">
+            <summary>
+            Lista as categorias do Faq
+            </summary>
+            <returns>Lista com todas as categorias</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.ListaFaqPerguntasRespostas(System.String)">
+            <summary>
+            Lista dodas as perguntas e respostas, de acordo com a categoria solicitada
+            </summary>
+            <param name="p_categoria"></param>
+            <returns>Lista com todas as perguntas e respostas</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.ListaAtendenteEmpreendimento(System.String,System.Int32)">
+            <summary>
+            Lista os atendente SAC que estão atribuidos ao produto
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_emp_codigo"></param>
+            <returns>Lista com os código do atendente SAC 1, 2 e 3</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.GetBoleto(System.String)">
+            <summary>
+            Efetua o doenloas do boleto bancário.
+            </summary>
+            <param name="p_numero_parcela"></param>
+            <returns>PDF do boleto bancário</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.GetExtrato(System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>
+            Efetua o download do extrato de pagamentos
+            </summary>
+            <param name="p_numero_organizacao"></param>
+            <param name="p_numero_filial"></param>
+            <param name="p_numero_contrato"></param>
+            <param name="p_data_base"></param>
+            <returns>PDF do extrato de pagamentos</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.GetInformeIR(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Efetua o download do demonstrativo de IR
+            </summary>
+            <param name="p_numero_organizacao"></param>
+            <param name="p_numero_filial"></param>
+            <param name="p_numero_contrato"></param>
+            <param name="p_ano_do_informe"></param>
+            <returns>PDF com o demonstativo do IR</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.GeraBoletoTeste">
+            <summary>
+            Testes
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.ListaProdutosMitre(System.Int32)">
+            <summary>
+            Lista de Empreendimentos Lançados ou Não
+            </summary>
+            <returns>Lista com ID e Nome</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.ListaRegiaoProdutosMitre">
+            <summary>
+            Lista as Regisões de Produtos da Mitre
+            </summary>
+            <returns>Lista com as regiões</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.SetBotInteracaoApp(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary> 
+             Insere registro na tabela bot_interacao a cada interação do BOT com as informações de cada etapa relevante para métricas futuras 
+            </summary> 
+            <param name="p_idbot"></param> 
+            <param name="p_plataforma"></param> 
+            <param name="p_channel"></param> 
+            <param name="p_username"></param> 
+            <param name="p_decisaoinicial"></param> 
+            <param name="p_tipodocumento"></param> 
+            <param name="p_documento"></param> 
+            <param name="p_opcaomenu"></param> 
+            <param name="p_tipoduvida"></param> 
+            <param name="p_email"></param> 
+            <param name="p_objetivocompra"></param> 
+            <param name="p_tipoapartamento"></param> 
+            <param name="p_regiao"></param> 
+            <param name="p_tipoempreendimento"></param> 
+            <param name="p_baixarebook"></param> 
+            <param name="p_proximopasso"></param> 
+            <returns>Status do Processamento</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:MitreWebAPI.Controllers.ChatBot.ChatBotView.SetBotInteracaoPesquisaApp(System.String,System.String,System.String)" -->
+        <member name="M:MitreWebAPI.Controllers.ChatBot.ChatBotView.SetBotInteracaoAtendimentoApp(System.String,System.String,System.String,System.String,System.String)">
+            <summary>  
+             Insere registro na tabela bot_interacao_atendimento a cada interação do BOT com as informações de cada etapa relevante para métricas futuras  
+            </summary>  
+            <param name="p_idbot"></param>  
+            <param name="p_protocolo"></param>  
+            <param name="p_depto"></param>  
+            <param name="p_agente"></param>  
+            <param name="p_status"></param>  
+            <returns>Status do Processamento</returns> 
+        </member>
+        <member name="T:MitreWebAPI.Controllers.Documentos.ArquivosController">
+            <summary>
+            Contre de Upload e Download de Arquivos
+            </summary>
+        </member>
+        <member name="F:MitreWebAPI.Controllers.Documentos.ArquivosController._infoClienteConectado">
+            <summary>
+            Clase que mantem na sessão as informações do client conectado.
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Documentos.ArquivosController.#ctor(Microsoft.Extensions.Configuration.IConfiguration,MitreWebAPI.Model.ChatBot.InfoClienteConectado,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Metodo princial de inicialização do controle de arquivos
+            </summary>
+            <param name="Configuration"></param>
+            <param name="infoClienteConectado"></param>
+            <param name="env"></param>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Documentos.ArquivosController.InfoDocumentoUpload(System.String,MitreWebAPI.Model.Documentos.InfoDocumentoUpload)">
+            <summary>
+            Faz upload de arquivos que o cliente eenvia pelo APP
+            </summary>
+            <param name="p_token_app"></param>
+            <param name="infoArqUpload"></param>
+            <returns>Lista com informação do arquivo enviado</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Documentos.ArquivosController.InfoDocumentoDownload(System.Int32,System.String,System.String)">
+            <summary>
+            Lista documentos que o cliente fez upload
+            </summary>
+            <param name="p_contrato_id"></param>
+            <param name="p_token_app"></param>
+            <param name="p_cpf_cnpj"></param>
+            <returns>Lista dados dos documentos</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Documentos.ArquivosController.DownloadDocumentoCliente(System.Int32,System.String,System.Int32,System.String)">
+            <summary>
+            Faz o download do documento do cliente
+            </summary>
+            <param name="p_contrato_id"></param>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_documento_id"></param>
+            <param name="p_token_app"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Documentos.ArquivosController.DownloadDocumentoClienteJson(System.Int32,System.String,System.Int32,System.String)">
+            <summary>
+            Faz o download do documento do cliente
+            </summary>
+            <param name="p_contrato_id"></param>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_documento_id"></param>
+            <param name="p_token_app"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Documentos.ArquivosController.ApagarDocumentoPessoal(System.Int32,System.String,System.Int32,System.String)">
+            <summary>
+            Apaga documento que o cliente fez upload
+            </summary>
+            <param name="p_contrato_id"></param>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_documento_id"></param>
+            <param name="p_token_app"></param>
+            <returns>Staus da eliminação do documento</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Documentos.ArquivosController.InfoDocumentoContrato(System.Int32,System.String,System.String)">
+            <summary>
+            Lista documentos contratuais incluídos para o cliente
+            </summary>
+            <param name="p_contrato_id"></param>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_token_app"></param>
+            <returns>Lista de documentos</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Documentos.ArquivosController.DownloadDocumentoContrato(System.Int32,System.String,System.Int32,System.String)">
+            <summary>
+            Faz o download do documento do contrato em Json
+            </summary>
+            <param name="p_contrato_id"></param>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_documento_id"></param>
+            <param name="p_token_app"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MitreWebAPI.Controllers.Documentos.ArquivosView">
+            <summary>
+            Controla Upload e Download e Arquivos
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Documentos.ArquivosView.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,System.String)">
+            <summary>
+            Guarda as configuraçõpes da aplicação devalida o token da aplicação
+            </summary>
+            <param name="Configuration"></param>
+            <param name="env"></param>
+            <param name="p_token_app"></param>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Documentos.ArquivosView.UploadFile(MitreWebAPI.Model.Documentos.InfoDocumentoUpload)">
+            <summary>
+            Fa o Upload do arquivo
+            </summary>
+            <param name="arq"></param>
+            <returns>Infoermações do Upload</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Documentos.ArquivosView.ListaDocumentoCliente(System.Int32,System.String)">
+            <summary>
+            Lista dos documento do cliente
+            </summary>
+            <param name="p_contrato_id"></param>
+            <param name="p_cpf_cnpj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Documentos.ArquivosView.ApagarDocumentoPessoal(System.Int32,System.String,System.Int32)">
+            <summary>
+            Apaga documento  que o cliente fez download
+            </summary>
+            <param name="p_contrato_id"></param>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_documento_id"></param>
+            <returns>Status da eliminação do documento</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Documentos.ArquivosView.DownloadDocumentoCliente(System.Int32,System.String,System.Int32)">
+            <summary>
+            Donload do documento do cliente
+            </summary>
+            <param name="p_contrato_id"></param>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_documento_id"></param>
+            <returns>Download do arquivo</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Documentos.ArquivosView.ListaDocumentoContrato(System.Int32,System.String)">
+            <summary>
+            Lista documentos contratuais do cliente
+            </summary>
+            <param name="p_contrato_id"></param>
+            <param name="p_cpf_cnpj"></param>
+            <returns>Lista Json com dados dos documentos</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Documentos.ArquivosView.DownloadDocumentoContrato(System.Int32,System.String,System.Int32)">
+            <summary>
+            Download de documento de contrato do cliente
+            </summary>
+            <param name="p_contrato_id"></param>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_documento_id"></param>
+            <returns>PDF do documento</returns>
+        </member>
+        <member name="T:MitreWebAPI.Controllers.RecebimentoController">
+            <summary>
+            Controla as parcelas para antecipação
+            </summary>
+        </member>
+        <member name="F:MitreWebAPI.Controllers.RecebimentoController._infoClienteConectado">
+            <summary>
+            Classe que mantem na sessão as informações do client conectado.
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.RecebimentoController.#ctor(Microsoft.Extensions.Configuration.IConfiguration,MitreWebAPI.Model.ChatBot.InfoClienteConectado,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Metodo princiap de inicialização docontrole de antecipação
+            </summary>
+            <param name="Configuration"></param>
+            <param name="infoClienteConectado"></param>
+            <param name="env"></param>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.RecebimentoController.ListaParcelasAntecipacao(System.String,System.String,System.String,System.String)">
+            <summary>
+            Lista as parcelas futuras com possibilidade de antecipar
+            </summary>
+            <param name="p_dt_vencimento"></param>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_contrato_id"></param>
+            <param name="p_token_app"></param>
+            <returns>Lista com valores das parcelas</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.RecebimentoController.AtualizaDescontoAntecipacao(System.String,MitreWebAPI.Model.Recebimento.InfoAtulizaDesconto)">
+            <summary>
+            Atualiza valor de desconto sobre a antecipação
+            </summary>
+            <param name="p_token_app"></param>
+            <param name="resultAtuDesc"></param>
+            <returns>O valor total do desconto</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.RecebimentoController.GerarAntecipacao(System.String,System.String,MitreWebAPI.Model.Recebimento.InfoAntecipacaoGerar)">
+            <summary>
+            Gera a antecipação de uma ou mais parcelas
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_token_app"></param>
+            <param name="resultAnt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.RecebimentoController.ContratoDetalheValorPagoQuitacao(System.String,System.Int32,System.String)">
+            <summary>
+            Lista informações com detalhes e consolidado de valores pagos e valor quitação na data base;
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_contrato"></param>
+            <param name="p_token_app"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MitreWebAPI.Controllers.Recebimentos.RecebimentoView">
+            <summary>
+            Controle de Pagamentos do cliente
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Recebimentos.RecebimentoView.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,System.String)">
+            <summary>
+            Guarda as configuraçõpes da aplicação devalida o token da aplicação
+            </summary>
+            <param name="Configuration"></param>
+            <param name="env"></param>
+            <param name="p_token_app"></param>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Recebimentos.RecebimentoView.ListaParcelasAntecipacao(System.String,System.String)">
+            <summary>
+            Lista Parcelas de um determinado contrato para antecipação
+            </summary>
+            <param name="p_contrato_id"></param>
+            <param name="p_dt_vencimento"></param>
+            <returns>Lista com informações das parcelas antecipaveis</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Recebimentos.RecebimentoView.GerarAntecipacao(MitreWebAPI.Model.Recebimento.InfoAntecipacaoGerar)">
+            <summary>
+            Gera a antecipação de parcelas em um determinado contrato do cliente
+            </summary>
+            <param name="infoAntecipacao"></param>
+            <returns>Lista com status da geração</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Recebimentos.RecebimentoView.ListaInfomacoesPagamentos(System.Int32)">
+            <summary>
+            Lista Parcelas Pagas e Não pagas do Contrato do Cliente
+            </summary>
+            <param name="p_contrato_id"></param>
+            <returns>Parcelas Pagas e Não pagas, Valor Total Pago e Total para Quitação </returns>
+        </member>
+        <member name="T:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController">
+            <summary>
+            Controle protocolos do SAC
+            </summary>
+        </member>
+        <member name="F:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController._infoClienteConectado">
+            <summary>
+            Classe que mantem na sessão as informações do client conectado.
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController.#ctor(Microsoft.Extensions.Configuration.IConfiguration,MitreWebAPI.Model.ChatBot.InfoClienteConectado,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Metodo princiap de inicialização docontrole de antecipação
+            </summary>
+            <param name="Configuration"></param>
+            <param name="infoClienteConectado"></param>
+            <param name="env"></param>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController.ListaSacDepertamentos(System.String)">
+            <summary>
+            Lista departamentos do SAC
+            </summary>
+            <param name="p_token_app"></param>
+            <returns>ID e descrição</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController.ListaSacDepertamentoAssunto(System.Int32,System.String)">
+            <summary>
+            Lista assuntos vinculados ao departamento SAC
+            </summary>
+            <param name="p_dpto_id"></param>
+            <param name="p_token_app"></param>
+            <returns>Id e descrição</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController.ListaSacProtocolos(System.String,System.String)">
+            <summary>
+            Lista os protocolos do cliente
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_token_app"></param>
+            <returns>Lista com as informações</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController.ListaSacProtocoloItem(System.Int32,System.String)">
+            <summary>
+            Lista detalhes das tratativas do protocolo 
+            </summary>
+            <param name="p_protocolo_id"></param>
+            <param name="p_token_app"></param>
+            <returns>Tratativas e nomes de anexo</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController.DownloadSacProtocoloItemAnexo(System.Int32,System.Int32,System.String)">
+            <summary>
+            Baixa o anexo do protocolo item
+            </summary>
+            <param name="p_protocolo_item_id"></param>
+            <param name="p_anexo_item_id"></param>
+            <param name="p_token_app"></param>
+            <returns>Arquivo binario anexo</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController.DownloadSacProtocoloItemAnexoJson(System.Int32,System.Int32,System.String)">
+            <summary>
+            Baixa o anexo do protocolo item em Json
+            </summary>
+            <param name="p_protocolo_item_id"></param>
+            <param name="p_anexo_item_id"></param>
+            <param name="p_token_app"></param>
+            <returns>Arquivo binario anexo</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController.SacProtocolosItemCriarNovo(System.String,MitreWebAPI.Model.SacProtocolos.InfoSacProtocoloIntemCriarNovo)">
+            <summary>
+            Cria um novo protocolo pelo cliente
+            </summary>
+            <param name="p_token_app"></param>
+            <param name="infoTratativa"></param>
+            <returns>Informações do protocolo criado</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController.SacProtocolosItemSalvar(System.String,MitreWebAPI.Model.SacProtocolos.InfoSacProtocoloIntemSalvar)">
+            <summary>
+            Salva a tratativa do cliente no protocolo
+            </summary>
+            <param name="p_token_app"></param>
+            <param name="infoTratativa"></param>
+            <returns>Status do salvamento</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController.UploadAnexoProtocoloItem(System.String,MitreWebAPI.Model.SacProtocolos.InfoSacProtocoloItemAnexosSalvar)">
+            <summary>
+            Salva o arquivo anexo na tratativa do cliente
+            </summary>
+            <param name="p_token_app"></param>
+            <param name="anexoInfo"></param>
+            <returns>Status do salvamento</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController.SacProtocolosItemConcluir(System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>
+            Conclui o protocolo pelo cliente
+            </summary>
+            <param name="p_agente_id"></param>
+            <param name="p_protocolo_id"></param>
+            <param name="p_protocolo_item_id"></param>
+            <param name="p_token_app"></param>
+            <returns>Status da conclusão do protocolo</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController.SacProtocolosReagendarComprmisso(System.Int32,System.Int32,System.String,System.String,System.String)">
+            <summary>
+            Reagenda um nova data para visita técnica
+            </summary>
+            <param name="p_agente_id"></param>
+            <param name="p_agendamento_id"></param>
+            <param name="p_data_ini"></param>
+            <param name="p_data_fim"></param>
+            <param name="p_token_app"></param>
+            <returns>Informaçõs do agendamento</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController.SacProtocolosCancelarComprmisso(System.Int32,System.String)">
+            <summary>
+            Cancela um determinado agendamento de compromisso
+            </summary>
+            <param name="p_agendamento_id"></param>
+            <param name="p_token_app"></param>
+            <returns>Status do cancelamento</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController.SacAgendaDatasDisponivel(System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>
+            Lista datas disponíveis para o agendamento 
+            </summary>
+            <param name="p_cliente_id"></param>
+            <param name="p_empreendimento_id"></param>
+            <param name="p_unidade_id"></param>
+            <param name="p_token_app"></param>
+            <returns>Datas disponiveis</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController.SacListaCompromissosAgendado(System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>
+            Lista os compromissos agendados
+            </summary>
+            <param name="p_cliente_id"></param>
+            <param name="p_empreendimento_id"></param>
+            <param name="p_unidade_id"></param>
+            <param name="p_token_app"></param>
+            <returns>Lista de agendamentos</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController.SacInfoToApp(MitreWebAPI.Model.SacProtocolos.InfoSacAlertaApp,System.String)">
+            <summary>
+            Alerta o APP sobre alterações no protocolo do cliente
+            </summary>
+            <param name="alertInfo"></param>
+            <param name="p_token_app"></param>
+            <returns>Status da integração</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosController.SacInfoToAppTeste(MitreWebAPI.Model.SacProtocolos.InfoSacAlertaApp,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="p_token_app"></param>
+            <param name="p_alertInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosView">
+            <summary>
+            Controla protocolos SAC
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosView.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,System.String)">
+            <summary>
+            Guarda as configuraçõpes da aplicação devalida o token da aplicação
+            </summary>
+            <param name="Configuration"></param>
+            <param name="env"></param>
+            <param name="p_token_app"></param>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosView.ListaSacDepertamentos">
+            <summary>
+            Lista Departamentos do SAC
+            </summary>
+            <returns>Lista com informações das parcelas antecipaveis</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosView.ListaSacDepertamentoAssunto(System.Int32)">
+            <summary>
+            Lista os assuntos de um determinado departamento
+            </summary>
+            <param name="p_depto_id"></param>
+            <returns>ID e descrição</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosView.ListaSacProtocolos(System.String)">
+            <summary>
+            Lista Protocolos SAC do Cliente
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosView.ListaSacProtocoloItem(System.Int32)">
+            <summary>
+            Lista detalhes das tratativas do protocolo 
+            </summary>
+            <param name="p_protocolo_id"></param>
+            <returns>Tratativas e nomes de anexo</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosView.DownloadSacProtocoloItemAnexo(System.Int32,System.Int32)">
+            <summary>
+            Baixa o anexo do protocolo item
+            </summary>
+            <param name="p_protocolo_item_id"></param>
+            <param name="p_anexo_item_id"></param>
+            <returns>Arquivo binario anexo</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosView.SacProtocolosItemCriarNovo(MitreWebAPI.Model.SacProtocolos.InfoSacProtocoloIntemCriarNovo)">
+            <summary>
+            Cria um novo protocolo pelo cliente
+            </summary>
+            <param name="infoTratativa"></param>
+            <returns>Informações do protocolo criado</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosView.SacProtocolosItemSalvar(MitreWebAPI.Model.SacProtocolos.InfoSacProtocoloIntemSalvar)">
+            <summary>
+            Salva a tratativa do cliente no protocolo
+            </summary>
+            <param name="infoTratativa"></param>
+            <returns>Status do salvamento</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosView.SacProtocolosItemConcluir(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Conclui o protocolo pelo cliente
+            </summary>
+            <param name="p_agente_id"></param>
+            <param name="p_protocolo_id"></param>
+            <param name="p_protocolo_item_id"></param>
+            <returns>Status da conclusão do protocolo</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosView.UploadAnexoProtocoloItem(MitreWebAPI.Model.SacProtocolos.InfoSacProtocoloItemAnexosSalvar)">
+            <summary>
+            Salva o arquivo anexo na tratativa do cliente
+            </summary>
+            <param name="anexoInfo"></param>
+            <returns>Status do salvamento</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosView.SacAgendaDatasDisponivel(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Lista datas disponíveis para o agendamento 
+            </summary>
+            <param name="p_cliente_id"></param>
+            <param name="p_empreendimento_id"></param>
+            <param name="p_unidade_id"></param>
+            <returns>Datas disponiveis</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosView.SacListaCompromissosAgendado(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Lista os compromissos agendados
+            </summary>
+            <param name="p_cliente_id"></param>
+            <param name="p_empreendimento_id"></param>
+            <param name="p_unidade_id"></param>
+            <returns>Lista de agendamentos</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosView.SacProtocolosReagendarComprmisso(System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Reagenda um nova data para visita técnica
+            </summary>
+            <param name="p_agente_id"></param>
+            <param name="p_agendamento_id"></param>
+            <param name="p_data_ini"></param>
+            <param name="p_data_fim"></param>
+            <returns>Informaçõs do agendamento</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosView.SacProtocolosCancelarComprmisso(System.Int32)">
+            <summary>
+            Cancela um determinado agendamento de compromisso
+            </summary>
+            <param name="p_agendamento_id"></param>
+            <returns>Status do cancelamento</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.SacProtocolos.SacProtocolosView.SacInfoToApp(MitreWebAPI.Model.SacProtocolos.InfoSacAlertaApp)">
+            <summary>
+            Alerta o APP sobre alterações no protocolo do cliente
+            </summary>
+            <param name="alertInfo"></param>
+            <returns>Status da integração</returns>
+        </member>
+        <member name="T:MitreWebAPI.Controllers.ShareController">
+            <summary>
+            Controla as parcelas para antecipação
+            </summary>
+        </member>
+        <member name="F:MitreWebAPI.Controllers.ShareController._infoClienteConectado">
+            <summary>
+            Classe que mantem na sessão as informações do client conectado.
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ShareController.#ctor(Microsoft.Extensions.Configuration.IConfiguration,MitreWebAPI.Model.ChatBot.InfoClienteConectado,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Metodo princiap de inicialização docontrole de antecipação
+            </summary>
+            <param name="Configuration"></param>
+            <param name="infoClienteConectado"></param>
+            <param name="env"></param>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ShareController.ListaUnidades(System.Int32,System.Int32,System.String)">
+            <summary>
+            Lista dados da unidades do emprendimento Share
+            </summary>
+            <param name="filial_id"></param>
+            <param name="empreendiento_id"></param>
+            <param name="p_token_app"></param>
+            <returns>Lista com informações do bloco e unidades</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ShareController.ListaTaxas(System.Int32,System.Int32,System.String)">
+            <summary>
+            Lista taxas do ERP
+            </summary>
+            <param name="filial_id"></param>
+            <param name="empreendiento_id"></param>
+            <param name="p_token_app"></param>
+            <returns>Dados dos tipos de taxas</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.ShareController.GerarContrato(System.String,MitreWebAPI.Model.Share.InfoProposta)">
+            <summary>
+            Gera o contrato a partir da proposta origem
+            </summary>
+            <param name="p_token_app"></param>
+            <param name="proposta"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MitreWebAPI.Controllers.Sahre.ShareView">
+            <summary>
+            Controle de Pagamentos do cliente
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Sahre.ShareView.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,System.String)">
+            <summary>
+            Guarda as configuraçõpes da aplicação devalida o token da aplicação
+            </summary>
+            <param name="Configuration"></param>
+            <param name="env"></param>
+            <param name="p_token_app"></param>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Sahre.ShareView.ListaUnidades(System.Int32,System.Int32)">
+            <summary>
+            Lista dados da unidades do emprendimento Share
+            </summary>
+            <param name="filial_id"></param>
+            <param name="empreendiento_id"></param>
+            <returns>Lista com informações do bloco e unidades</returns>
+        </member>
+        <member name="F:MitreWebAPI.Controllers.Util.EnviarEmailController._infoClienteConectado">
+            <summary>
+            Clase que mantem na sessão as informações do client conectado.
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Util.EnviarEmailController.#ctor(Microsoft.Extensions.Configuration.IConfiguration,MitreWebAPI.Model.ChatBot.InfoClienteConectado,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Metodo princiap de inicialização do Chat Bot
+            </summary>
+            <param name="Configuration"></param>
+            <param name="infoClienteConectado"></param>
+            <param name="env"></param>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Util.EnviarEmailController.EnviarEmailPara(System.String,System.String,System.String,System.String,System.String,System.String,System.String,MitreWebAPI.Model.Util.AnexoEmail,System.String)">
+            <summary>
+            Envia o e-mail 
+            </summary>
+            <param name="p_nome"></param>
+            <param name="p_de"></param>
+            <param name="p_para"></param>
+            <param name="p_copia"></param>
+            <param name="p_copiaoculta"></param>
+            <param name="p_assunto"></param>
+            <param name="p_menssagemHtml"></param>
+            <param name="p_anexoEmail"></param>
+            <param name="p_token_app"></param>
+            <returns>Dados com informações do envio do e-mail</returns>
+        </member>
+        <member name="T:MitreWebAPI.Controllers.Util.EnviarEmailView">
+            <summary>
+            Controla envio de e-mail
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Util.EnviarEmailView.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,System.String)">
+            <summary>
+            Guarda as configuraçõpes da aplicação devalida o token da aplicação
+            </summary>
+            <param name="Configuration"></param>
+            <param name="env"></param>
+            <param name="p_token_app"></param>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Util.EnviarEmailView.EnviarEmailPara(System.String,System.String,System.String,System.String,System.String,System.String,System.String,MitreWebAPI.Model.Util.AnexoEmail)">
+            <summary>
+            Encia o e-mail solicitado
+            </summary>
+            <param name="p_nome"></param>
+            <param name="p_de"></param>
+            <param name="p_para"></param>
+            <param name="p_copia"></param>
+            <param name="p_copiaoculta"></param>
+            <param name="p_assunto"></param>
+            <param name="p_menssagemHtml"></param>
+            <param name="p_anexoEmail"></param>
+            <returns>Dados de confirmação do envio</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Util.EnviarEmailView.SetInfoLogApp(System.String,System.String,System.String,System.String)">
+            <summary>
+            Controla os logs de acesso à API, com informações de cpf ou cnpj, ip, browser e url
+            </summary>
+            <param name="p_cpf_cnpj"></param>
+            <param name="p_remote_ip_address"></param>
+            <param name="p_user_agent"></param>
+            <param name="p_path_request"></param>
+        </member>
+        <member name="T:MitreWebAPI.Controllers.Util.ErrorsController">
+            <summary>
+            Controla globalmente todos os erros da API
+            </summary>
+        </member>
+        <member name="F:MitreWebAPI.Controllers.Util.ErrorsController._infoClienteConectado">
+            <summary>
+            Contém as informações do cliente conectado
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Util.ErrorsController.Error">
+            <summary>
+            Responde o erro para o client
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:MitreWebAPI.Controllers.Util.Formatacoes">
+            <summary>
+            Funções de formatações gerais
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Util.Formatacoes.FormatCpfCnpj(System.String)">
+            <summary>
+            Formatar uma string CNPJ
+            </summary>
+            <param name="CPF_CNPJ">string comtendo CPF ou CNPJ sem formatacao</param>
+            <returns>string CPF ou CNPJ formatada</returns>
+            <example>Recebe '99999999999' Devolve '999.999.999-99'</example>
+            <example>Recebe '99999999999999' Devolve '99.999.999/9999-99'</example>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Util.Formatacoes.FormatCNPJ(System.String)">
+            <summary>
+            Formatar uma string CNPJ
+            </summary>
+            <param name="CNPJ">string CNPJ sem formatacao</param>
+            <returns>string CNPJ formatada</returns>
+            <example>Recebe '99999999999999' Devolve '99.999.999/9999-99'</example>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Util.Formatacoes.FormatCPF(System.String)">
+            <summary>
+            Formatar uma string CPF
+            </summary>
+            <param name="CPF">string CPF sem formatacao</param>
+            <returns>string CPF formatada</returns>
+            <example>Recebe '99999999999' Devolve '999.999.999-99'</example>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Util.Formatacoes.SemFormatacao(System.String)">
+            <summary>
+            Retira a Formatacao de uma string CNPJ/CPF
+            </summary>
+            <param name="Codigo">string Codigo Formatada</param>
+            <returns>string sem formatacao</returns>
+            <example>Recebe '99.999.999/9999-99' Devolve '99999999999999'</example>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Util.Formatacoes.TelefoneEnvioSMS(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="telefone"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Util.Formatacoes.RemoveDbNullValue(System.String)">
+            <summary>
+            Remove valores que contenha a palavra null
+            </summary>
+            <param name="valor"></param>
+            <returns>Retorna vazio caso seja null</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Util.Formatacoes.FormataValorDecimalToString(System.Double)">
+            <summary>
+            Formata valor numérico pt-BR
+            </summary>
+            <param name="valor"></param>
+            <returns>Valor formatado</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Util.Formatacoes.FormataValorStringToDecimal(System.String)">
+            <summary>
+            Formata String de valor em numerico
+            </summary>
+            <param name="valor"></param>
+            <returns>Valor Deciaml</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Util.Formatacoes.GetContentType(System.String)">
+            <summary>
+            Acha o tipo de conteudo de um arquivo
+            </summary>
+            <param name="fileName"></param>
+            <returns>Retorna o ContentType</returns>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Util.Formatacoes.FormataValorZeroDb(System.String)">
+            <summary>
+            Formata valor ZERO ,00 para 0,00
+            </summary>
+            <param name="valor"></param>
+            <returns>Valor 0,00</returns>
+        </member>
+        <member name="T:MitreWebAPI.Controllers.Seguranca.SegurancaController">
+            <summary>
+            Controla geração de token para acesso à API
+            </summary>
+        </member>
+        <member name="F:MitreWebAPI.Controllers.Seguranca.SegurancaController._jWTAuthenticationManager">
+            <summary>
+            Variavél de autenticação por token dinamico
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Seguranca.SegurancaController.#ctor(MitreWebAPI.Controllers.IJWTAuthenticationManager)">
+            <summary>
+            Controle de geração de token
+            </summary>
+            <param name="jWTAuthenticationManager"></param>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.Seguranca.SegurancaController.token(MitreWebAPI.Model.UserCred)">
+            <summary>
+            Recebe requisições de token dinamico
+            </summary>
+            <param name="userCred"></param>
+            <returns>Token</returns>
+        </member>
+        <member name="T:MitreWebAPI.Controllers.IJWTAuthenticationManager">
+            <summary>
+            Interface de geração de token
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.IJWTAuthenticationManager.Authenticate(System.String,System.String)">
+            <summary>
+            Dados de autenticação do usuário
+            </summary>
+            <param name="username"></param>
+            <param name="password"></param>
+            <returns>token gerado</returns>
+        </member>
+        <member name="T:MitreWebAPI.Controllers.JWTAuthenticationManager">
+            <summary>
+            Controla a geração do token com usuário e senha
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.JWTAuthenticationManager.#ctor(System.String)">
+            <summary>
+            Token interno da aplicação
+            </summary>
+            <param name="tokenKey"></param>
+        </member>
+        <member name="M:MitreWebAPI.Controllers.JWTAuthenticationManager.Authenticate(System.String,System.String)">
+            <summary>
+            Auntetica o usuário e senha
+            </summary>
+            <param name="username"></param>
+            <param name="password"></param>
+            <returns>Token gerado</returns>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.InfoAlteraDadosCadastral">
+            <summary>
+            Dados para informações de alteração de dados cadastrais do cliente
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.InfoBoletos">
+            <summary>
+            Contém informações de boletos bancários e linhas digitável
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.InfoClienteConectado">
+            <summary>
+            Contém informações do Cliente Conectado ao Serviço, como url, browser, ip e cpf ou cnpj.
+            </summary>
+        </member>
+        <member name="P:MitreWebAPI.Model.ChatBot.InfoClienteConectado.cpf_cnpj">
+            <summary>
+            Contém o cpf ou cnpj do cliente
+            </summary>
+        </member>
+        <member name="P:MitreWebAPI.Model.ChatBot.InfoClienteConectado.browser">
+            <summary>
+            Contém as informação do bowser client da aplicação
+            </summary>
+        </member>
+        <member name="P:MitreWebAPI.Model.ChatBot.InfoClienteConectado.ip">
+            <summary>
+            Contem informação do IP do client da aplicação
+            </summary>
+        </member>
+        <member name="P:MitreWebAPI.Model.ChatBot.InfoClienteConectado.url_path">
+            <summary>
+            Contém a URL do client da aplicação
+            </summary>
+        </member>
+        <member name="P:MitreWebAPI.Model.ChatBot.InfoClienteConectado.token">
+            <summary>
+            Contém o Token da aplicação
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.InfoContratos">
+            <summary>
+            Contém informações da unidade e contrato do cliente
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.InfoDemoIR">
+            <summary>
+            Contém informações do demonstrativo de IR do cliente
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.InfoExtratos">
+            <summary>
+            Contém informações do extrato de pagamentos do cliente
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.InfoFaqCategoria">
+            <summary>
+            Contem informações de Categoria do Faq 
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.InfoFaqPerguntasRespostas">
+            <summary>
+            Contem informações de Perguntas e Respostas de uma determinada categoria do Faq
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.InfoProduto">
+            <summary>
+            Lista dados do produto
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.InfoSolicitaTokenTemp">
+            <summary>
+            Contém informações de geração de código temporário para acesso aos dados do cliente.
+            Quando o cliente esquece a senha, é possível dar a ele um código de acesso temporário.
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.ResultAgenteEmpreendimento">
+            <summary>
+            Retorna as informações de agentes SAC que atende determinado produto
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.ResultAlteraDadosCadastral">
+            <summary>
+            Devolve status da alteraçõa de dados
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.ResultBoletos">
+            <summary>
+            Retorna uma lista de informações de boleto em aberto e disponível para o cliente.
+            /// </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.ResultConsultaDadosCadastral">
+            <summary>
+            Informamações basica do cadastro do clienta
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.ResultContratos">
+            <summary>
+            Retorna as informações de contratos disponíveis para o cliente por meio do CPF ou CNPJ informado.
+            tipo: 
+                UI - Usuário ou senha inválida
+                DI - Database ou serviço inválido
+                PI - Senha inválida
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.ResultDemoIR">
+            <summary>
+            Devolve uma lista de demosntartivos de IR informado pelo CPF ou CNPJ do cliente.
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.ResultExtratos">
+            <summary>
+            Devolve a lista de extratos disnoíveis do cliente.
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.ResultFaqCategorias">
+            <summary>
+            Devolve a lista de categorias do Faq.
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.ResultFaqPerguntasRespostas">
+            <summary>
+            Devolve a lista de perguntas e respostas do Faq de acordo com a categoria escolhida.
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.ResultGravaInteracaoAtendimentoBOT">
+            <summary>
+            Devolve a informação de se a interação do bloco atendimento do BOT ocorreu com sucesso.
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.ResultGravaInteracaoBOT">
+            <summary>
+            Devolve a informação de se a interação do BOT ocorreu com sucesso.
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.ResultGravaInteracaoPesquisaBOT">
+            <summary>
+            Devolve a informação de se a interação do bloco pesquisa do BOT ocorreu com sucesso.
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.ResultProdutos">
+            <summary>
+            Lista de todos os produtos disponíveis
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.ResultSolicitaTokenTemp">
+            <summary>
+            Devolte a informação de envio de código de acesso temporario para o cliente.
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.ResultSolicitaTrocaSenha">
+            <summary>
+            Solicitação de resete de senha do cliente
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.ResultTrocarSenha">
+            <summary>
+            Dados de Resete de Senaha do Cliente
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.ResultValidaCliente">
+            <summary>
+            Devolve a onformação de se o cliente existe com o CPF ou CNPJ solicitante.
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.ChatBot.ResultValidaToken">
+            <summary>
+            Devolve dados do Token da aplicação, se é valido ou não.
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.Recebimento.InfoContratoValorNaoPago">
+            <summary>
+            Lista detalhes das parcelas em aberto para quitação
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.Recebimento.InfoContratoValorPago">
+            <summary>
+            Detalha valores pagos
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.Recebimento.InfoParcelasAntecipacao">
+            <summary>
+            Lista detalhes das parcelas para antecipação
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.Recebimento.ResultAntecipacao">
+            <summary>
+            Lista as parcelas para antecipação de um determinado contrato
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.Recebimento.ResultContratoPagoQuitacao">
+            <summary>
+            Lista o total pago e quitação na última data base e detalhe das parcelas
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.Share.InfoCliente">
+            <summary>
+            Dados do Cliente
+            tipo: F = Responsável financeiro e R = Residente
+            principal: S = Sim e N = Não
+            pct_participacao: de 0 a 100, para caso de mais de um responsável financeiro, para os residentes usar sempre 0
+            tipo_pessoa: F = Física e J = Jurídica
+            estado_civil: S = Solteiro(a), C = Casado(a), V = Viúvo(a), D = Divorciado(a), A = União Estável e J = Separado(a) Judicialmente
+            regime_casamento: P = Comunhão Parcial de Bens, U = Comunhão Universal de Bens, S = Separação Total de Bens, D = Regime Dotal e A = Participação Final nos Aquestos    
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.Share.InfoClienteConjuge">
+            <summary>
+            Dados do Conjuge do Cliente
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.Share.InfoClienteEndereco">
+            <summary>
+            Informações de endereçamento do cliente
+            tipo: RES = Residencial, COM = Comercial, COB = Cobrança, FAT = Faturamento
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.Share.InfoClienteTelefone">
+            <summary>
+            Tipo do telefone: COM = Comercial, CEL = Celular, RES = Residencial.
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.Share.InfoProposta">
+            <summary>
+            Informações da proposta para criação do contrato
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Model.Share.InfoPropostaPagto">
+            <summary>
+            Informações da forma de pagamento
+            tipo: Tipo de parcela S = Sinal, M = Mensal e I = Intermediária  
+            </summary>
+        </member>
+        <member name="T:MitreWebAPI.Startup">
+            <summary>
+            Classe Inicial da API
+            </summary>
+        </member>
+        <member name="P:MitreWebAPI.Startup.Configuration">
+            <summary>
+            Leitura das configurações da API
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Método inicial de leitura das confihurações da API
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="M:MitreWebAPI.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:MitreWebAPI.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+        <member name="T:MitreWebAPI.Util.MultipartResult">
+            <summary>
+            Controla a junção de arquivos diversos
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Util.MultipartResult.#ctor(System.String,System.String)">
+            <summary>
+            Devolve o resultado da junção de arquivos
+            </summary>
+            <param name="subtype"></param>
+            <param name="boundary"></param>
+        </member>
+        <member name="M:MitreWebAPI.Util.MultipartResult.ExecuteResultAsync(Microsoft.AspNetCore.Mvc.ActionContext)">
+            <summary>
+            Efetua a jução de um ou mais arquivos
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MitreWebAPI.Util.SenderEmail">
+            <summary>
+            Controla o envio de e-mail
+            </summary>
+        </member>
+        <member name="F:MitreWebAPI.Util.SenderEmail.EXCEPTION">
+            <summary>
+            Contém dados de exceção
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Util.SenderEmail.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Inicia e ler as configurações da classe de envio de e-mail
+            </summary>
+            <param name="Configuration"></param>
+            <param name="env"></param>
+        </member>
+        <member name="M:MitreWebAPI.Util.SenderEmail.EmailTo(System.Collections.Generic.List{System.String},System.String,System.String,System.String)">
+            <summary>
+            Metodo para o envio de e-mail em geral.
+            </summary>
+            <param name="to"></param>
+            <param name="nome"></param>
+            <param name="assunto"></param>
+            <param name="menssagemHtml"></param>
+            <returns>Retorna true ou false, representando o envio com sucesso ou não</returns>
+        </member>
+        <member name="M:MitreWebAPI.Util.SenderEmail.EmailTo(System.String,System.String,System.String,System.String,System.String,System.String,System.String,MitreWebAPI.Model.Util.AnexoEmail)">
+            <summary>
+            
+            </summary>
+            <param name="p_nome"></param>
+            <param name="p_de"></param>
+            <param name="p_para"></param>
+            <param name="p_copia"></param>
+            <param name="p_copiaoculta"></param>
+            <param name="p_assunto"></param>
+            <param name="p_menssagemHtml"></param>
+            <param name="p_anexoEmail"></param>
+            <returns>Json com informação do envio</returns>
+        </member>
+        <member name="M:MitreWebAPI.Util.SenderEmail.AppErrosEmailTo(System.String,System.String,System.String)">
+            <summary>
+            Metodo para envio de e-mail de erros gerais da API
+            </summary>
+            <param name="nome"></param>
+            <param name="assunto"></param>
+            <param name="menssagemHtml"></param>
+            <returns>Retorna true ou false, representando o envio com sucesso ou não</returns>
+        </member>
+        <member name="T:MitreWebAPI.Util.SenderSMS">
+            <summary>
+            Controla o envio de SMS
+            </summary>
+        </member>
+        <member name="F:MitreWebAPI.Util.SenderSMS.SMS_USER">
+            <summary>
+            Usuário que conecta no serviço de SMS
+            </summary>
+        </member>
+        <member name="F:MitreWebAPI.Util.SenderSMS.SMS_PWD">
+            <summary>
+            Senha do usuário que conecta no serviço de envio de SMS
+            </summary>
+        </member>
+        <member name="M:MitreWebAPI.Util.SenderSMS.Enviar(System.String,System.String,System.String)">
+            <summary>
+            Metodo que envia o SMS da aplicação em geral.
+            </summary>
+            <param name="p_de_name"></param>
+            <param name="p_para_num"></param>
+            <param name="p_mensagem"></param>
+            <returns>Retorna true ou false, signifando se enviou com sucesso ou não</returns>
+        </member>
+    </members>
+</doc>

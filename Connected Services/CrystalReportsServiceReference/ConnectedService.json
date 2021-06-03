@@ -1,0 +1,30 @@
+﻿{
+  "ProviderId": "Microsoft.VisualStudio.ConnectedService.Wcf",
+  "Version": "15.0.40203.910",
+  "ExtendedData": {
+    "inputs": [
+      "https://developer.mitrerealty.com.br/CrystalReportsWCF/Service.svc?wsdl"
+    ],
+    "collectionTypes": [
+      "System.Array",
+      "System.Collections.Generic.Dictionary`2"
+    ],
+    "namespaceMappings": [
+      "*, CrystalReportsServiceReference"
+    ],
+    "references": [
+      "BoletoNetCore, {BoletoNetCore, 3.0.1.82}",
+      "BoletoNetCore.PDF, {BoletoNetCore.PDF, 3.0.0}",
+      "Oracle.ManagedDataAccess, {Oracle.ManagedDataAccess.Core, 2.19.91}",
+      "System.ServiceModel, {System.ServiceModel.Primitives, 4.4.4}",
+      "System.ServiceModel.Duplex, {System.ServiceModel.Duplex, 4.4.4}",
+      "System.ServiceModel.Http, {System.ServiceModel.Http, 4.4.4}",
+      "System.ServiceModel.NetTcp, {System.ServiceModel.NetTcp, 4.4.4}",
+      "System.ServiceModel.Primitives, {System.ServiceModel.Primitives, 4.4.4}",
+      "System.ServiceModel.Security, {System.ServiceModel.Security, 4.4.4}",
+      "WkHtmlToPdf, {WkHtmlToPdf, 1.0.2}"
+    ],
+    "targetFramework": "netcoreapp3.1",
+    "typeReuseMode": "All"
+  }
+}
